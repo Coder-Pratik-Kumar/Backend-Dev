@@ -11,7 +11,7 @@ fs.copyFile("../testing.txt", "copied.txt", (err) => {
 try {
     fs.readFileSync("copied.txt", "utf-8")
     console.log("file is copied")
-}
+}     
 catch (err){
     console.log("Error while copying file");
 }
