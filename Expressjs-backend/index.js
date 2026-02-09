@@ -126,7 +126,40 @@ app.post("/students/register", (req, res) => {
     res.status(201).json(newStudent);
 });
 
+app.put("/students/:id", (req, res) => {
+    const userId = parseInt(req.params.id);
+
+    const { id, email, ...updates } = req.body;
+
+    const foundIndex = students.findIndex(s => s.id === userId);
+    if (foundIndex == -1) {
+        return res.status(404).send("student not found")
+    }
+
+    students[foundIndex] = { ...students[foundIndex], ...req.body };
+
+    const result = { message: "student record updated successfully", students: students };
+    return res.status(200).json(result);
+})
+
+app.delete("/students/:id", (req, res) => {
+    const userId = parseInt(req.params.id);
+
+    const foundIndex = students.findIndex(s => s.id === userId);
+    if (foundIndex === -1) {
+        return res.status(404).send("student not found");
+    }   
+    const deletedStudent = students.splice(foundIndex, 1);
+
+    const result = {
+        message: "student record deleted successfully",
+        deletedStudent: deletedStudent[0],
+        students: students
+    };
+
+    return res.status(200).json(result);
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-});
+}); 
