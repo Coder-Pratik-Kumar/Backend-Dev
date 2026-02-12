@@ -1,11 +1,13 @@
 const express = require("express");
 const fs = require("fs").promises;
+const path = require("path");
 
 const app = express();
 
-app.set("view engine", "ejs");
-
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from public folder
+app.use(express.static("public"));
 
 const readStudentsFromFile = async () => {
     try {
@@ -23,21 +25,16 @@ const saveStudentsToFile = async (students) => {
     );
 };
 
-app.get("/", async (req, res) => {
-    const allSTudents = await readStudentsFromFile();
-    res.render("form", { allSTudents });
-});
-
-
+// Serve static HTML file
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/public/form.html");
-})
+    res.sendFile(path.join(__dirname, "public", "form.html"));
+});
 
 app.post("/students/register", async (req, res) => {
     const { name, branch } = req.body;
-
+  
+    console.log("Student Data:", req.body);
     const students = await readStudentsFromFile();
-
     students.push({ name, branch });
 
     await saveStudentsToFile(students);
