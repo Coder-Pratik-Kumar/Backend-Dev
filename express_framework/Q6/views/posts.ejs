@@ -1,0 +1,15 @@
+<h1>Blog Posts</h1>
+
+<form action="/posts" method="POST">
+    <input type="text" name="title" placeholder="Title" required><br>
+    <textarea name="content"></textarea><br>
+    <button type="submit">Add Post</button>
+</form>
+
+<hr>
+
+<% posts.forEach(post => { %>
+    <h3>
+        <a href="/posts/<%= post.id %>"><%= post.title %></a>
+    </h3>
+<% }) %>
