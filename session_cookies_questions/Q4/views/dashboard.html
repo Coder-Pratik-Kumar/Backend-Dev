@@ -1,0 +1,33 @@
+<h2>Welcome to Dashboard</h2>
+
+<div id="warning" style="display:none; color:red;">
+    Your session will expire in 1 minute!
+    <button onclick="extendSession()">Stay Logged In</button>
+</div>
+
+<script>
+
+const sessionTime = 5 * 60 * 1000; // 5 minutes
+const warningTime = 4 * 60 * 1000; // show warning after 4 minutes
+
+// show warning
+setTimeout(() => {
+    document.getElementById("warning").style.display = "block";
+}, warningTime);
+
+// auto logout
+setTimeout(() => {
+    window.location.href = "/logout";
+}, sessionTime);
+
+// extend session
+function extendSession() {
+    fetch("/extend-session")
+    .then(res => res.json())
+    .then(data => {
+        alert("Session extended!");
+        location.reload();
+    });
+}
+
+</script>
